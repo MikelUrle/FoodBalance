@@ -21,9 +21,9 @@ export default {
 
         try {
           // el fetch que hace la llamada al back para recoger los datos, usando el metodo 'GET' y el modo 'cors'
-          const response = await fetch('http://localhost/MikelUrle/foodbalanceback/public/api/Comida', {
+          const response = await fetch('http://127.0.0.1:8000/FoodBalance/foodbalanceback/public/api/Comida', {
               method: 'GET',
-              mode: 'cors'
+              mode: 'no-cors'
           });
         
           const data = await response.json();
@@ -58,9 +58,9 @@ export default {
 
         try {
 
-          const response = await fetch('http://localhost/MikelUrle/foodbalanceback/public/api/CategoriasComida', {
+          const response = await fetch('http://127.0.0.1:8000/FoodBalance/foodbalanceback/public/api/CategoriasComida', {
               method: 'GET',
-              mode: 'cors'
+              mode: 'no-cors'
           });
 
           const data = await response.json();
@@ -100,10 +100,10 @@ export default {
             alert("datuak falta dira");
           } else {
             var js = JSON.stringify({"Nombre": this.nombre, "Calorias": this.calorias, "Proteina": this.proteina, "Grasa": this.grasa, "CH": this.ch, "Fibra": this.fibra, "Extra": this.extra, "Categoria": this.categoria}); 
-            fetch('http://localhost/MikelUrle/foodbalanceback/public/api/MeterComida', {
+            fetch('http://127.0.0.1:8000/FoodBalance/foodbalanceback/public/api/MeterComida', {
                 method: 'POST',
                 body: js,
-                mode: 'cors'
+                mode: 'no-cors'
             })
             .then(function (response) {
                     return response.text();
@@ -123,10 +123,10 @@ export default {
           console.log(ida);
             var js = JSON.stringify({"id": ida});
             console.log(js);
-            fetch('http://localhost/MikelUrle/foodbalanceback/public/api/BorrarComida', {
+            fetch('http://127.0.0.1:8000/FoodBalance/foodbalanceback/public/api/BorrarComida', {
                 method: 'DELETE',
                 body: js,
-                mode: 'cors'
+                mode: 'no-cors'
             })
             .then(function (response) {
                     return response.text();

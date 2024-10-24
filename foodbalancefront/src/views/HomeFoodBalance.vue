@@ -27,9 +27,9 @@ export default {
 
         try {
 
-          const response = await fetch('http://localhost/MikelUrle/foodbalanceback/public/api/CategoriasComida', {
+          const response = await fetch('http://127.0.0.1:8000/FoodBalance/foodbalanceback/public/api/CategoriasComida', {
               method: 'GET',
-              mode: 'cors'
+              mode: 'no-cors'
           });
 
           const data = await response.json();
@@ -51,9 +51,9 @@ export default {
 
         try {
           // el fetch que hace la llamada al back para recoger los datos, usando el metodo 'GET' y el modo 'cors'
-          const response = await fetch('http://localhost/MikelUrle/foodbalanceback/public/api/Comida', {
+          const response = await fetch('http://127.0.0.1:8000/FoodBalance/foodbalanceback/public/api/Comida', {
               method: 'GET',
-              mode: 'cors'
+              mode: 'no-cors'
           });
 
           const data = await response.json();
