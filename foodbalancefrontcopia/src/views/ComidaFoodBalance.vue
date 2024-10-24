@@ -21,30 +21,38 @@ export default {
 
         try {
           // el fetch que hace la llamada al back para recoger los datos, usando el metodo 'GET' y el modo 'cors'
-          const response = await fetch('http://127.0.0.1:8000/FoodBalance/foodbalanceback/public/api/Comida', {
+          const response = await fetch('http://localhost:8000/api/index.php', {
               method: 'GET',
-              mode: 'no-cors'
+              mode: 'no-cors',
+              headers: {
+                'Content-Type': 'application/json'  // Asegúrate de que se envíe el tipo de contenido correcto
+              }
           });
         
+        //   if (!response.ok) {
+        //     throw new Error(`HTTP error! status: ${response.status}`);
+        // }
+
           const data = await response.json();
           console.log(data);
         
           this.datos = [];
           this.comida = [];
 
-          for (let i = 0; i < data.length; i++) {
+          // Procesar los datos
+          data.forEach(item => {
               this.datos.push({
-                  "id": data[i].id,
-                  "Nombre": data[i].Nombre,
-                  "Calorias": data[i].Calorias,
-                  "Proteina": data[i].Proteina,
-                  "Grasa": data[i].Grasa,
-                  "CH": data[i].CH,
-                  "Fibra": data[i].Fibra,
-                  "Extra": data[i].Extra,
-                  "Categoria": data[i].Categoria
+                  "id": item.id,
+                  "Nombre": item.Nombre,
+                  "Calorias": item.Calorias,
+                  "Proteina": item.Proteina,
+                  "Grasa": item.Grasa,
+                  "CH": item.CH,
+                  "Fibra": item.Fibra,
+                  "Extra": item.Extra,
+                  "Categoria": item.Categoria
               });
-          }
+          });
 
           this.comida = this.datos;
 
