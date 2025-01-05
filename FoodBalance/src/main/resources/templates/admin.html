@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="/js/script.js"></script>
+    <title>FoodBalance</title>
+    <link rel="stylesheet" href="/styles/admin.css">
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+</head>
+<body>
+
+	<div class="container text-center">
+	  <div class="row align-items-start">
+	    <div class="col">
+
+			<div class="form-container">
+			    <h2>Registro de Datos</h2>
+			    <form id="datosFormulario" method="post" th:action="@{/añadirComida}">
+			        <div class="form-group">
+			            <label for="nombre">Nombre:</label>
+			            <input type="text" id="nombre" name="nombre" placeholder="Introduce el nombre" required>
+			        </div>
+			        <div class="form-group">
+			            <label for="calorias">Calorías:</label>
+			            <input type="number" id="calorias" name="calorias" placeholder="Introduce las calorías" required>
+			        </div>
+			        <div class="form-group">
+			            <label for="carbohidratos">Carbohidratos (g):</label>
+			            <input type="number" id="carbohidratos" name="carbohidratos" placeholder="Introduce los carbohidratos" required>
+			        </div>
+			        <div class="form-group">
+			            <label for="grasa">Grasa (g):</label>
+			            <input type="number" id="grasa" name="grasa" placeholder="Introduce la grasa" required>
+			        </div>
+			        <div class="form-group">
+			            <label for="proteina">Proteína (g):</label>
+			            <input type="number" id="proteina" name="proteina" placeholder="Introduce la proteína" required>
+			        </div>
+					<div>
+					<div class="nav-item dropdown">
+					  <button class="btn btn-dark dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+					    Seleccione Categoria
+					  </button>
+					  <ul class="dropdown-menu dropdown-menu-dark">
+					    <li th:each="elemento : ${atr_lista_categorias}">
+						<a 
+						  class="dropdown-item" 
+						  th:text="${elemento.nombre}" 
+						  href="" 
+						  th:onclick="'cambiarValorCategoria(' + ${elemento.id} + '); return false;'">
+						</a>
+					  </li>
+					  </ul>
+					</div>
+					
+					<input type="hidden" id="categoria_id" name="categoria_id" value="0">
+			        <button type="submit" class="btn-submit">Guardar Comida</button>
+			    </form>
+			</div>
+			
+	    </div>
+	    <div class="col">
+			
+			<div class="dropdown categoriaComida">
+			  <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+			    Seleccionar Categoria
+			  </button>
+			  <ul class="dropdown-menu">
+			    <li th:each="elementoCategoria : ${atr_lista_categorias}"><a th:href="@{/filtroCategoriasAdmin(categoriaid=${elementoCategoria.id})}" class="dropdown-item" th:text="${elementoCategoria.nombre}">Action</a></li>
+			  </ul>
+			</div>
+
+			<div class="contenedorComidas">
+				<div class="tabla-scroll">
+				<table class="table tablaComidas" style="cursor: pointer;">
+				  <thead>
+				    <tr>
+				      <th scope="col">Nombre</th>
+				      <th scope="col">Calorias</th>
+				      <th scope="col">Carbohidratos</th>
+				      <th scope="col">Grasa</th>
+					  <th scope="col">Proteina</th>
+					  <th scope="col"></th>
+				    </tr>
+				  </thead>
+				  <tbody>
+				    <tr th:each="elementoComida : ${atr_lista_comida}">
+				      <td th:text="${elementoComida.nombre}"></td>
+				      <td th:text="${elementoComida.calorias}"></td>
+				      <td th:text="${elementoComida.carbohidratos}"></td>
+				      <td th:text="${elementoComida.grasa}"></td>
+					  <td th:text="${elementoComida.proteina}"></td>
+					  <td>
+						<form method="post" th:action="@{/modificarComida}">
+							<input type="hidden" name="comida_id" th:value="${elementoComida.id}">
+							<button type="submit" class="btn-submit">Modificar</button>
+						</form>
+					   </td>
+				    </tr>
+				  </tbody>
+				</table>
+				</div>
+			</div>
+
+	    </div>
+	  </div>
+	</div>
+	
+	<!--  Zona Categoria	-->
+	
+	<form method="post" th:action="@{/añadirCategoria}">
+		<div class="form-floating añadir-categoria" >
+		  <textarea class="form-control" name="categoriaNombre" id="floatingTextarea"></textarea>
+		</div>
+		<button type="submit" class="btn-submit" style="width: 400px; margin-left: -705px;">Añadir Categoria</button>
+	</form>
+	
+	<div class="contenedorCategorias">
+		<div class="tabla-scroll2">
+		<table class="table tablaComidas" style="cursor: pointer;" disabled>
+		  <thead>
+		    <tr>
+		      <th scope="col">Nombre de la Categoria</th>
+		  	  <th></th>  
+		  </tr>
+		  </thead>
+		  <tbody>
+		    <tr th:each="elementoCategoriaEnseñar : ${atr_lista_categorias}" th:onclick="
+			">
+		      <td th:text="${elementoCategoriaEnseñar.nombre}"></td>
+			  <td>
+			  <form method="post" th:action="@{/modificarCategoria}">
+			  	<input type="hidden" name="categoria_id" th:value="${elementoCategoriaEnseñar.id}">
+			  	<button type="submit" class="btn-submit">Modificar</button>
+			  </form>
+			   </td>
+		    </tr>
+		  </tbody>
+		</table>
+		</div>
+	</div>
+	
+	<form method="post" th:action="@{/añadirUsuario}">
+		<button type="submit" class="btn-submit" style="width:1090px; margin-left: -1.2%;">Añadir Usuario</button>
+	</form>
+	
+	</div>
+
+    <div id="menu">
+        <div style="margin-top: 0%;" class="menu-contenedor">
+            <div class="menu" onmouseover="abrirMenu()" onmouseout="cerrarMenu()">
+            <ul class="menu-items">
+                <a th:href="@{/inicio}">
+                    <li>
+                        <img src="images/Comida.png" alt="Menu Icon" class="menu-icon" style="width: 80px;">
+                        <span class="menu-text" style="margin-left: 5%;"><b>Comida</b></span>
+                    </li>
+                </a>
+                <a th:href="@{/comidaHistorial}">
+                    <li>
+                        <img src="images/RegistroComida.png" alt="Image 1" class="menu-icon" style="width: 80px;">
+                        <span class="menu-text" style="margin-left: 5%;"><b>Macros</b></span>
+                    </li>
+                </a>
+                <a th:href="@{/peso}">
+                    <li>
+                        <img src="images/Peso.png" alt="Image 2" class="menu-icon" style="width: 80px;">
+                        <span class="menu-text" style="margin-left: 5%;"><b>Peso</b></span>
+                    </li>
+                </a>
+                <a th:href="@{/pesoHistorial}">
+                    <li>
+                        <img src="images/RegistroPeso.png" alt="Image 3" class="menu-icon" style="width: 80px;">
+                        <span class="menu-text" style="margin-left: 5%;"><b>Historial</b></span>
+                    </li>
+                </a>
+                <a th:href="@{/admin}">
+                    <li>
+                        <img src="images/Admin.png" alt="Image 3" class="menu-icon" style="width: 80px;">
+                        <span class="menu-text" style="margin-left: 5%;"><b>Admin</b></span>
+                    </li>
+                </a>
+            </ul>
+            </div>
+        </div>
+    </div>
+
+	<script>
+		
+		function cambiarValorCategoria(nuevoValor) {
+		  document.getElementById("categoria_id").value = nuevoValor;
+		}
+		
+	</script>
+	
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+	
+</body>
+</html>
